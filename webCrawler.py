@@ -18,8 +18,8 @@ headers = {
 def getData(url, username):
     response = requests.get(url = url.format(username = username))
     if response.status_code != 200:
-        raise Exception("Network Error")
-    
+        raise Exception("Network Error", response)
+
     data = json.loads(response.text)
     return [user["login"] for user in data]
 
@@ -34,13 +34,19 @@ class bfsCrawler():
     def crawl(self):
         while self.visisted.getUserCount() < self.limit:
             user = self.q.popUser()
-
             if self.visisted.isPresent(user): continue
-
-            self.visisted.addUser(user)
-
-            followers = getData(followersUrl, user)
-            following = getData(followingUrl, user)
+            
+            followers = following = []
+            try:
+                followers = getData(followersUrl, user)
+                following = getData(followingUrl, user)
+            except Exception as exp:
+                print(exp.args[0])
+                print(exp.args[1].text)
+                self.q.addUser(user)
+                return None
+            else:
+                self.visisted.addUser(user)
 
             self.q.addUserList(followers)
             self.q.addUserList(following)
