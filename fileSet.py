@@ -4,6 +4,8 @@
 import os
 
 class userSet1():
+    # Basic FileSet Implementation without any Optimizations
+    
     def __init__(self, fileAddr: str):
         # variable to store the file address
         self.__fileAddr = fileAddr
