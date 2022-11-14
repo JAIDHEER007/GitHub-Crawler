@@ -46,22 +46,18 @@ class userQueue1():
         self.__dataset.append(username)
         self.writeDeque()
 
-    def popUser(self):
-        self.__dataset.popleft()
+    def addUserList(self, users):
+        self.__dataset.extend(users)
         self.writeDeque()
+
+    def popUser(self):
+        user =  self.__dataset.popleft()
+        self.writeDeque()
+        return user
 
     def printQueue(self):
         print(self.__dataset)
 
-# if __name__ == '__main__':
-#     obj1 = userQueue1("test.txt")
-#     obj1.addUser("kumar rajesh")
-
-#     obj1.printQueue()
-
-#     obj1.popUser()
-
-#     obj1.printQueue()
 
 
 

@@ -1,8 +1,6 @@
 # Program: fileSet.py
 # Usage: Provides Set Implementation using HashMap and along with File Redudandancy
 
-import os
-
 class userSet1():
     # Basic FileSet Implementation without any Optimizations
     
@@ -51,11 +49,12 @@ class userSet1():
             self.__filePresent = False
             raise FileNotFoundError("Given File Address is Invalid") from None
 
-        print(self.__dataset)
-
     def getUserCount(self):
         return self.__userCount
     
+    def isPresent(self, username):
+        return self.__dataset.__contains__(username)
+
     def addUser(self, username):
         # If the user is already present in the set
         # Do Nothing
@@ -74,20 +73,6 @@ class userSet1():
             # Safely Close the File Handle
             self.__fileHandle.close()
 
-
-# if __name__ == '__main__':
-#     obj1 = userSet1("test.txt")
-#     # obj2 = userSet1("test1.txt")
-
-#     obj1.addUser("jaidheer")
-#     obj1.addUser("Mehar Srinivas")
-#     obj1.addUser("Kumar Rajesh")
-#     obj1.addUser("Franklin")
-
-#     obj1.addUser("jaidheer")
-#     obj1.addUser("sankar")
-
-#     print(obj1.getUserCount())
 
 
 
