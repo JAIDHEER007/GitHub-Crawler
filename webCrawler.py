@@ -1,31 +1,14 @@
 import os
-import requests
 import json
 
 from fileSet import userSet1
 from fileQueue import userQueue1
-
-followersUrl = "https://api.github.com/users/{username}/followers"
-followingUrl = "https://api.github.com/users/{username}/following"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-    "Host": "api.gtihub.com",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Accept-Language": "en-US,en;q=0.6"
-}
-
-def getData(url, username):
-    response = requests.get(url = url.format(username = username))
-    if response.status_code != 200:
-        raise Exception("Network Error", response)
-
-    data = json.loads(response.text)
-    return [user["login"] for user in data]
+from requestMaker import apiRequest
 
 class bfsCrawler():
     def __init__(self, info):
-    
+        self.obj = apiRequest()
+
         self.q = userQueue1(info["queuePath"])
         self.visisted = userSet1(info["completedPath"])
         self.limit = info["limit"]
@@ -38,8 +21,8 @@ class bfsCrawler():
             
             followers = following = []
             try:
-                followers = getData(followersUrl, user)
-                following = getData(followingUrl, user)
+                followers = self.obj.getFollowers(user)
+                following = self.obj.getFollowing(user)
             except Exception as exp:
                 print(exp.args[0])
                 print(exp.args[1].text)
